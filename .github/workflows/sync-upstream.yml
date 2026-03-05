@@ -1,0 +1,134 @@
+name: Sync upstream and rebase xai/custom
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      force_rebase:
+        description: 'Force rebase even if no new upstream commits'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync-and-rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/ArroyoSystems/arroyo.git || true
+          git fetch upstream
+          git fetch origin
+
+      # ── Step 1: Sync master with upstream ──
+      - name: Sync master with upstream
+        run: |
+          git checkout master
+          BEFORE=$(git rev-parse HEAD)
+          git merge --ff-only upstream/master
+          AFTER=$(git rev-parse HEAD)
+
+          if [ "$BEFORE" = "$AFTER" ]; then
+            echo "master is already up to date with upstream."
+            echo "MASTER_UPDATED=false" >> $GITHUB_ENV
+          else
+            echo "master updated: $BEFORE -> $AFTER"
+            echo "MASTER_UPDATED=true" >> $GITHUB_ENV
+          fi
+
+      - name: Push master
+        if: env.MASTER_UPDATED == 'true'
+        run: git push origin master
+
+      # ── Step 2: Rebase xai/custom onto updated master ──
+      - name: Rebase xai/custom onto master
+        id: rebase
+        if: env.MASTER_UPDATED == 'true' || inputs.force_rebase == 'true'
+        run: |
+          git checkout xai/custom
+          if git rebase master; then
+            echo "REBASE_SUCCESS=true" >> $GITHUB_ENV
+            echo "✅ Rebase succeeded"
+          else
+            git rebase --abort
+            echo "REBASE_SUCCESS=false" >> $GITHUB_ENV
+            echo "❌ Rebase failed due to conflicts"
+          fi
+
+      - name: Push rebased xai/custom
+        if: env.REBASE_SUCCESS == 'true'
+        run: git push origin xai/custom --force-with-lease
+
+      # ── Step 3: Handle conflicts — open an issue ──
+      - name: Create conflict issue
+        if: env.REBASE_SUCCESS == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const upstream_sha = '${{ env.UPSTREAM_SHA }}';
+            const title = '⚠️ Upstream sync: rebase conflicts on xai/custom';
+            
+            // Check for existing open issue
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'upstream-sync',
+            });
+            
+            if (existing.data.length > 0) {
+              console.log('Conflict issue already open, skipping.');
+              return;
+            }
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              labels: ['upstream-sync'],
+              body: [
+                '## Upstream sync failed',
+                '',
+                'The automated rebase of `xai/custom` onto the latest `master` (synced from upstream) failed due to merge conflicts.',
+                '',
+                '### How to resolve',
+                '',
+                '```bash',
+                'gh repo clone xai-org/arroyo && cd arroyo',
+                'git remote add upstream https://github.com/ArroyoSystems/arroyo.git',
+                'git fetch --all',
+                '',
+                '# Sync master',
+                'git checkout master && git merge --ff-only upstream/master && git push origin master',
+                '',
+                '# Rebase custom branch',
+                'git checkout xai/custom && git rebase master',
+                '# ... resolve conflicts ...',
+                'git rebase --continue',
+                'git push origin xai/custom --force-with-lease',
+                '```',
+                '',
+                'Or trigger Grok to resolve it:',
+                '> grok: rebase xai/custom onto master and resolve the conflicts',
+                '',
+                `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              ].join('\n'),
+            });
