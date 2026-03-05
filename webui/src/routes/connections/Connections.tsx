@@ -6,7 +6,6 @@ import {
   Button,
   Box,
   Flex,
-  useColorModeValue,
   IconButton,
   Table,
   Tbody,
@@ -181,13 +180,7 @@ export function Connections() {
   );
 
   const table = (
-    <Box
-      bg="#1A1D24"
-      border="1px solid"
-      borderColor="gray.800"
-      borderRadius="xl"
-      overflow="hidden"
-    >
+    <Box bg="#1A1D24" border="1px solid" borderColor="gray.800" borderRadius="xl" overflow="hidden">
       <Stack spacing={0}>
         {configModal}
         {messageBox}

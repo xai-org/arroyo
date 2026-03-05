@@ -52,7 +52,12 @@ const WelcomeModal: React.FC = () => {
             Let's do it!
           </Button>
           <Link>
-            <Text fontSize={'sm'} color={'gray.500'} onClick={disableTour} _hover={{ color: 'gray.400' }}>
+            <Text
+              fontSize={'sm'}
+              color={'gray.500'}
+              onClick={disableTour}
+              _hover={{ color: 'gray.400' }}
+            >
               No thanks
             </Text>
           </Link>

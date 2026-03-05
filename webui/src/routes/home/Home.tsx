@@ -67,7 +67,13 @@ export const Stat = (props: Props) => {
       )}
       <Flex justify="space-between" align="flex-start">
         <Stack spacing={2}>
-          <Text fontSize="xs" color="gray.400" fontWeight="500" textTransform="uppercase" letterSpacing="0.05em">
+          <Text
+            fontSize="xs"
+            color="gray.400"
+            fontWeight="500"
+            textTransform="uppercase"
+            letterSpacing="0.05em"
+          >
             {label}
           </Text>
           <Heading size="lg" color={color || 'white'} fontWeight="700">
@@ -75,14 +81,7 @@ export const Stat = (props: Props) => {
           </Heading>
         </Stack>
         {icon && (
-          <Flex
-            w={10}
-            h={10}
-            bg="whiteAlpha.50"
-            borderRadius="lg"
-            align="center"
-            justify="center"
-          >
+          <Flex w={10} h={10} bg="whiteAlpha.50" borderRadius="lg" align="center" justify="center">
             <Icon as={icon} boxSize={5} color={accentColor || 'gray.400'} />
           </Flex>
         )}
@@ -170,7 +169,9 @@ export function Home() {
               Overview of your streaming pipelines
             </Text>
           </Stack>
-          <HStack spacing="3" mt={{ base: 4, lg: 0 }}>{createPipelineButton}</HStack>
+          <HStack spacing="3" mt={{ base: 4, lg: 0 }}>
+            {createPipelineButton}
+          </HStack>
         </Flex>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="5">
           <Stat

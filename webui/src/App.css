@@ -13,6 +13,10 @@ dfn {
 }
 
 /* Smooth transitions globally */
-button, a, input, select, textarea {
+button,
+a,
+input,
+select,
+textarea {
   transition: all 0.2s ease;
 }

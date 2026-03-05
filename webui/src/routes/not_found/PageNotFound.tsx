@@ -31,11 +31,7 @@ const PageNotFound: React.FC = () => {
             The page you're looking for doesn't exist or has been moved.
           </Text>
         </VStack>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() => navigate('/')}
-        >
+        <Button variant="primary" size="sm" onClick={() => navigate('/')}>
           Go back home
         </Button>
       </VStack>

@@ -1,4 +1,10 @@
-import { modalAnatomy, popoverAnatomy, tabsAnatomy, tableAnatomy, cardAnatomy } from '@chakra-ui/anatomy';
+import {
+  modalAnatomy,
+  popoverAnatomy,
+  tabsAnatomy,
+  tableAnatomy,
+  cardAnatomy,
+} from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers, defineStyleConfig } from '@chakra-ui/styled-system';
 
 const { definePartsStyle: modalPartsStyle, defineMultiStyleConfig: defineModalMultiStyleConfig } =

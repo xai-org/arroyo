@@ -111,22 +111,39 @@ const OperatorDetail: React.FC<OperatorDetailProps> = ({ pipelineId, jobId, node
       <HStack fontWeight="600" fontSize="sm">
         <Box color="gray.200">Operator</Box>
         <Spacer />
-        <Badge variant="subtle" colorScheme="gray" fontSize="xs" title="parallelism for this operator">
+        <Badge
+          variant="subtle"
+          colorScheme="gray"
+          fontSize="xs"
+          title="parallelism for this operator"
+        >
           ×{node?.parallelism}
         </Badge>
       </HStack>
-      <Box marginTop="12px" fontSize="sm">Backpressure: {backpressureBadge}</Box>
+      <Box marginTop="12px" fontSize="sm">
+        Backpressure: {backpressureBadge}
+      </Box>
       <Box marginTop="12px" fontSize="sm">
         <Badge variant="outline" colorScheme="gray" fontSize="xs" mr={2} title={'ID of this node'}>
           #{node?.node_id}
         </Badge>
-        <Box as="span" color="gray.300">{node?.description}</Box>
+        <Box as="span" color="gray.300">
+          {node?.description}
+        </Box>
       </Box>
       <Box marginTop="12px" fontFamily="'IBM Plex Mono', monospace" fontSize="xs">
-        <Code bg="whiteAlpha.100" color="green.300" px={2} py={0.5} borderRadius="md">{Math.round(msgRecv)} eps</Code>
-        <Box as="span" color="gray.500" mx={1}>rx</Box>
-        <Code bg="whiteAlpha.100" color="blue.300" px={2} py={0.5} borderRadius="md" ml={2}>{Math.round(msgSent)} eps</Code>
-        <Box as="span" color="gray.500" mx={1}>tx</Box>
+        <Code bg="whiteAlpha.100" color="green.300" px={2} py={0.5} borderRadius="md">
+          {Math.round(msgRecv)} eps
+        </Code>
+        <Box as="span" color="gray.500" mx={1}>
+          rx
+        </Box>
+        <Code bg="whiteAlpha.100" color="blue.300" px={2} py={0.5} borderRadius="md" ml={2}>
+          {Math.round(msgSent)} eps
+        </Code>
+        <Box as="span" color="gray.500" mx={1}>
+          tx
+        </Box>
       </Box>
       {eventsReceivedGraph}
       {eventsSentGraph}

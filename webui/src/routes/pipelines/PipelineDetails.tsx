@@ -307,25 +307,23 @@ export function PipelineDetails() {
 
   function stateColorScheme(state: string): string {
     switch (state) {
-      case 'Running': return 'green';
-      case 'Failed': return 'red';
-      case 'Stopping': return 'orange';
+      case 'Running':
+        return 'green';
+      case 'Failed':
+        return 'red';
+      case 'Stopping':
+        return 'orange';
       case 'Checkpointing':
-      case 'Compacting': return 'blue';
-      case 'Finished': return 'cyan';
+      case 'Compacting':
+        return 'blue';
+      case 'Finished':
+        return 'cyan';
     }
     return 'gray';
   }
 
   const headerArea = (
-    <Flex
-      align="center"
-      px={6}
-      py={4}
-      borderBottom="1px solid"
-      borderColor="gray.800"
-      bg="#12141A"
-    >
+    <Flex align="center" px={6} py={4} borderBottom="1px solid" borderColor="gray.800" bg="#12141A">
       <Flex align="center" gap={3}>
         <Heading as="h4" size="md" fontWeight="600" color="white">
           {pipeline?.name}

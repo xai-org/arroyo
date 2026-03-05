@@ -27,11 +27,7 @@ const ApiUnavailable: React.FC = () => {
             The Arroyo API is currently unavailable. Please check that the server is running.
           </Text>
         </VStack>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() => location.reload()}
-        >
+        <Button variant="primary" size="sm" onClick={() => location.reload()}>
           Try again
         </Button>
       </VStack>

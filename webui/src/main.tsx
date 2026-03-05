@@ -4,7 +4,16 @@ import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 import { theme as proTheme } from '@chakra-ui/pro-theme';
 import '@fontsource/inter/variable.css';
 
-import { modalTheme, popoverTheme, tabsTheme, buttonTheme, badgeTheme, tableTheme, headingTheme, cardTheme } from './theming';
+import {
+  modalTheme,
+  popoverTheme,
+  tabsTheme,
+  buttonTheme,
+  badgeTheme,
+  tableTheme,
+  headingTheme,
+  cardTheme,
+} from './theming';
 import { createRoot } from './lib/CloudComponents';
 
 declare global {

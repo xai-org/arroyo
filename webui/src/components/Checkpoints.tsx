@@ -52,7 +52,14 @@ const Checkpoints: React.FC<CheckpointsProps> = ({ pipeline, job, checkpoints })
         bg="#1A1D24"
       >
         <Stat>
-          <StatLabel color="gray.400" fontSize="xs" textTransform="uppercase" letterSpacing="0.05em">Started</StatLabel>
+          <StatLabel
+            color="gray.400"
+            fontSize="xs"
+            textTransform="uppercase"
+            letterSpacing="0.05em"
+          >
+            Started
+          </StatLabel>
           <StatNumber fontSize="md" color="gray.100">
             {new Intl.DateTimeFormat('en-us', {
               dateStyle: undefined,
@@ -61,7 +68,14 @@ const Checkpoints: React.FC<CheckpointsProps> = ({ pipeline, job, checkpoints })
           </StatNumber>
         </Stat>
         <Stat marginLeft={10}>
-          <StatLabel color="gray.400" fontSize="xs" textTransform="uppercase" letterSpacing="0.05em">Finished</StatLabel>
+          <StatLabel
+            color="gray.400"
+            fontSize="xs"
+            textTransform="uppercase"
+            letterSpacing="0.05em"
+          >
+            Finished
+          </StatLabel>
           <StatNumber fontSize="md" color="gray.100">
             {checkpoint.finish_time != null
               ? new Intl.DateTimeFormat('en-us', {
@@ -72,12 +86,30 @@ const Checkpoints: React.FC<CheckpointsProps> = ({ pipeline, job, checkpoints })
           </StatNumber>
         </Stat>
         <Stat marginLeft={10}>
-          <StatLabel color="gray.400" fontSize="xs" textTransform="uppercase" letterSpacing="0.05em">Duration</StatLabel>
-          <StatNumber fontSize="md" color="gray.100">{formatDuration(end - start)}</StatNumber>
+          <StatLabel
+            color="gray.400"
+            fontSize="xs"
+            textTransform="uppercase"
+            letterSpacing="0.05em"
+          >
+            Duration
+          </StatLabel>
+          <StatNumber fontSize="md" color="gray.100">
+            {formatDuration(end - start)}
+          </StatNumber>
         </Stat>
         <Stat marginLeft={10}>
-          <StatLabel color="gray.400" fontSize="xs" textTransform="uppercase" letterSpacing="0.05em">Total Size</StatLabel>
-          <StatNumber fontSize="md" color="gray.100">{dataFormat(checkpointBytes)}</StatNumber>
+          <StatLabel
+            color="gray.400"
+            fontSize="xs"
+            textTransform="uppercase"
+            letterSpacing="0.05em"
+          >
+            Total Size
+          </StatLabel>
+          <StatNumber fontSize="md" color="gray.100">
+            {dataFormat(checkpointBytes)}
+          </StatNumber>
         </Stat>
       </StatGroup>
     );

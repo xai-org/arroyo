@@ -25,7 +25,11 @@ const Indicator: React.FC<IndicatorProps> = ({ content, label, color }) => {
       >
         {content}
       </Text>
-      {label && <Text fontSize="xs" color="gray.500" mt={0.5}>{label}</Text>}
+      {label && (
+        <Text fontSize="xs" color="gray.500" mt={0.5}>
+          {label}
+        </Text>
+      )}
     </Flex>
   );
 };
@@ -113,11 +117,20 @@ const PipelineRow: React.FC<PipelineRowProps> = ({
       </Td>
       <Td key={'state'}>
         {job?.state ? (
-          <Badge colorScheme={stateColorScheme(job?.state)} variant="subtle" px={2.5} py={0.5} borderRadius="full" fontSize="xs">
+          <Badge
+            colorScheme={stateColorScheme(job?.state)}
+            variant="subtle"
+            px={2.5}
+            py={0.5}
+            borderRadius="full"
+            fontSize="xs"
+          >
             {job?.state}
           </Badge>
         ) : (
-          <Text color="gray.500" fontSize="sm">—</Text>
+          <Text color="gray.500" fontSize="sm">
+            —
+          </Text>
         )}
       </Td>
       <Td>

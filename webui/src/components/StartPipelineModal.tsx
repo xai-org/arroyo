@@ -53,14 +53,21 @@ const StartPipelineModal: React.FC<StartPipelineModalProps> = ({
             {startError ? (
               <Alert status="error" borderRadius="lg">
                 <AlertIcon />
-                <AlertDescription overflowY={'auto'} maxH={400} whiteSpace={'pre-wrap'} fontSize="sm">
+                <AlertDescription
+                  overflowY={'auto'}
+                  maxH={400}
+                  whiteSpace={'pre-wrap'}
+                  fontSize="sm"
+                >
                   {startError}
                 </AlertDescription>
               </Alert>
             ) : null}
 
             <FormControl>
-              <FormLabel fontSize="sm" fontWeight="500" color="gray.300">Name</FormLabel>
+              <FormLabel fontSize="sm" fontWeight="500" color="gray.300">
+                Name
+              </FormLabel>
               <Input
                 type="text"
                 value={options.name || ''}
@@ -70,13 +77,20 @@ const StartPipelineModal: React.FC<StartPipelineModalProps> = ({
                 borderColor="gray.700"
                 borderRadius="lg"
                 _hover={{ borderColor: 'gray.600' }}
-                _focus={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }}
+                _focus={{
+                  borderColor: 'brand.400',
+                  boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)',
+                }}
               />
-              <FormHelperText color="gray.500" fontSize="xs">Give this pipeline a name to help you identify it</FormHelperText>
+              <FormHelperText color="gray.500" fontSize="xs">
+                Give this pipeline a name to help you identify it
+              </FormHelperText>
             </FormControl>
 
             <FormControl>
-              <FormLabel fontSize="sm" fontWeight="500" color="gray.300">Parallelism</FormLabel>
+              <FormLabel fontSize="sm" fontWeight="500" color="gray.300">
+                Parallelism
+              </FormLabel>
               <Box>
                 <NumberInput
                   step={1}
@@ -91,7 +105,10 @@ const StartPipelineModal: React.FC<StartPipelineModalProps> = ({
                     borderColor="gray.700"
                     borderRadius="lg"
                     _hover={{ borderColor: 'gray.600' }}
-                    _focus={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }}
+                    _focus={{
+                      borderColor: 'brand.400',
+                      boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)',
+                    }}
                   />
                   <NumberInputStepper>
                     <NumberIncrementStepper borderColor="gray.700" />
