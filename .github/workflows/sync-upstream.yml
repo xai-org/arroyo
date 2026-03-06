@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   sync-and-rebase:
-    runs-on: ubuntu-latest
+    runs-on: action-runner-arm-cpu-int-cicd
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
