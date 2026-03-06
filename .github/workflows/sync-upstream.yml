@@ -39,32 +39,47 @@ jobs:
           git fetch origin
 
       # ── Step 1: Sync master with upstream ──
+      # We force-reset master to upstream/master, then re-add the workflow
+      # file so scheduled runs keep working (GitHub only runs schedules from
+      # the default branch).
       - name: Sync master with upstream
         run: |
-          git checkout master
-          BEFORE=$(git rev-parse HEAD)
-          git merge --ff-only upstream/master
-          AFTER=$(git rev-parse HEAD)
+          UPSTREAM_HEAD=$(git rev-parse upstream/master)
+          ORIGIN_MASTER=$(git rev-parse origin/master)
 
-          if [ "$BEFORE" = "$AFTER" ]; then
+          # Check if upstream has new commits (compare trees ignoring our workflow commit)
+          git checkout master
+          git reset --hard upstream/master
+
+          # Re-add the workflow file from xai/custom so the schedule keeps working
+          git checkout origin/xai/custom -- .github/workflows/sync-upstream.yml
+          git add .github/workflows/sync-upstream.yml
+          if git diff --cached --quiet; then
+            echo "Workflow file unchanged, no extra commit needed."
+          else
+            git commit -m "ci: sync upstream workflow (auto-maintained)"
+          fi
+
+          NEW_HEAD=$(git rev-parse HEAD)
+          if [ "$ORIGIN_MASTER" = "$NEW_HEAD" ]; then
             echo "master is already up to date with upstream."
             echo "MASTER_UPDATED=false" >> $GITHUB_ENV
           else
-            echo "master updated: $BEFORE -> $AFTER"
+            echo "master updated: $ORIGIN_MASTER -> $NEW_HEAD"
             echo "MASTER_UPDATED=true" >> $GITHUB_ENV
           fi
 
       - name: Push master
         if: env.MASTER_UPDATED == 'true'
-        run: git push origin master
+        run: git push origin master --force-with-lease
 
-      # ── Step 2: Rebase xai/custom onto updated master ──
-      - name: Rebase xai/custom onto master
+      # ── Step 2: Rebase xai/custom onto updated upstream ──
+      - name: Rebase xai/custom onto upstream/master
         id: rebase
         if: env.MASTER_UPDATED == 'true' || inputs.force_rebase == 'true'
         run: |
           git checkout xai/custom
-          if git rebase master; then
+          if git rebase upstream/master; then
             echo "REBASE_SUCCESS=true" >> $GITHUB_ENV
             echo "✅ Rebase succeeded"
           else
@@ -117,7 +132,7 @@ jobs:
                 'git fetch --all',
                 '',
                 '# Sync master',
-                'git checkout master && git merge --ff-only upstream/master && git push origin master',
+                'git checkout master && git reset --hard upstream/master && git push origin master --force-with-lease',
                 '',
                 '# Rebase custom branch',
                 'git checkout xai/custom && git rebase master',
